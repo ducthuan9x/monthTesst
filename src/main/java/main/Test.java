@@ -19,6 +19,7 @@ public class Test {
         ProductDAO productDAO=new ProductDAO();
 //        System.out.println(productDAO.selectAllProduct());
 //        System.out.println(productDAO.findByCategoryDetail(1));
-        System.out.println(productDAO.findByName("vi"));
+//        System.out.println(productDAO.findByName("vi"));
+        System.out.println(productDAO.findAllByCategory(1));
     }
 }

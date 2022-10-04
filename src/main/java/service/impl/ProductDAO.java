@@ -137,4 +137,25 @@ public class ProductDAO {
         }
         return products;
     }
+
+    public List<Product> findAllByCategory(int id) {
+       List<Product>products=new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(" select product.name,product.price, product.categoryDetailId from product\n" +
+                     "join categorydetail c on c.categoryDetailId = product.categoryDetailId\n" +
+                     "join category c2 on c2.categoryId = c.categoryId where c2.categoryId=?;");) {
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                double price = rs.getDouble("price");
+                int categoryDetailId=rs.getInt("categoryDetailId");
+                CategoryDetail detail=categoryDetailDAO.selectCategoryDetail(categoryDetailId);
+                products.add(new Product(id, name,price,detail));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return products;
+    }
 }
